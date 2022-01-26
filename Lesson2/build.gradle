@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+group 'org.ericghara'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework:spring-context:5.3.14'
+}
+
+application {
+    // usage example: gradle run -PmainClass=XYZ --args=ARGS --info
+    setMainClass(project.hasProperty("mainClass") ? project.getProperty("mainClass") : "NULL")
+}
+
+test {
+    useJUnitPlatform()
+}
