@@ -3,14 +3,10 @@ plugins {
     id 'application'
 }
 
-group 'org.ericghara'
-version '0.0.1-SNAPSHOT'
+group = 'org.ericghara'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
 
 repositories {
     mavenCentral()
