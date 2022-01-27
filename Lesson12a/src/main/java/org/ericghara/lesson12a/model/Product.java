@@ -3,6 +3,10 @@ package org.ericghara.lesson12a.model;
 import org.springframework.data.annotation.Id;
 
 public class Product {
+    @Id
+    private int id;
+    private String name;
+    private double price;
 
     public int getId() {
         return id;
@@ -27,11 +31,4 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-
-    @Id
-    private int id;
-
-    private String name;
-    private double price;
-
 }

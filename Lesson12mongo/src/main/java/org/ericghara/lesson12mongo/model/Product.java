@@ -8,6 +8,11 @@ import java.util.UUID;
 @Document
 public class Product {
 
+    @Id
+    private String id;
+    private String name;
+    private double price;
+
     public String getId() {
         return id;
     }
@@ -15,13 +20,6 @@ public class Product {
     public void setId(String id) {
         this.id = id;
     }
-
-    @Id
-    private String id;
-
-    private String name;
-    private double price;
-
 
     public String getName() {
         return name;
