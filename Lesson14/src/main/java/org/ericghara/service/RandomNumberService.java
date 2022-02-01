@@ -9,18 +9,19 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Random;
 
 @Service
-@Primary
-@Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.DEFAULT)
+//@Primary
+//@Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.DEFAULT)  //Set this when using TARGET_CLASS mode
 public class RandomNumberService implements NumberService {
 
     /*
-    Scopes:
+    scopeName:
     SCOPE_APPLICATION: Singleton, always the same
     SCOPE_SESSION: Same instance per user per session (timeout ~25 min)
     SCOPE_REQUEST: create a new instance with each request
      */
 
     /*
+    proxyMode:
     * TARGET_CLASS: proxy injects by class target
     * INTERFACES: injects by interface
     * DEFAULT: prefers interface if available, if not injects by class

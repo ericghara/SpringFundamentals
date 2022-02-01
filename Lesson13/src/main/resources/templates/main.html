@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+</head>
+<body>
+<h1>User Dashboard</h1>
+
+<form method="get" action="/getAuths">
+    <button type="submit">Get Authorities</button>
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}">
+</form>
+
+<section class="new-user-form">
+    <h2>Add a New User</h2>
+    <form enctype='application/plain'>
+        <label for="username">Username:</label><br>
+        <input id="username" name="username" value=""><br>
+
+        <label for="password">Password:</label><br>
+        <input id="password" name="password" value=""><br>
+        <span id="authsContainer">
+            <label for="auth0">Authority:</label><br>
+            <input id="auth0" name="auths" value="ROLE_">
+        </span>
+
+        <button type="button" id="addAuth">Add More Authorities</button><br>
+
+        <button type="submit">Add User</button>
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}">
+    </form>
+</section>
+<script th:inline="javascript">
+    function handleFormSubmit(event) {
+        event.preventDefault();
+
+        var data = new FormData(event.target);
+        const csrf = data.get("_csrf");
+        data.delete("_csrf");
+        const formJSON = Object.fromEntries(data.entries());
+        // for multi-selects, we need special handling
+        formJSON.auths = data.getAll('auths');
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            console.log("statechange: " + xhr.readyState);
+            if(xhr.readyState == 4) {
+                if (xhr.status == 202) {
+                    location.href="/accepted";
+                }
+                else if (xhr.status == 400) {
+                    location.href="/bad_request";
+                }
+            }
+        };
+        xhr.open("POST", "/addUser");
+        xhr.setRequestHeader("X-CSRF-TOKEN", csrf);
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(formJSON, null, 2) );
+    }
+
+    function handleAddAuth(event) {
+        event.preventDefault();
+        var container = document.getElementById("authsContainer");
+        container.appendChild(document.createElement("br") );
+        var count = container.childElementCount;
+        var auth = document.createElement("input");
+        auth.name = "auths";
+        auth.type = "text";
+        auth.id = "auth" + count;
+        auth.value= "ROLE_";
+        container.appendChild(auth);
+    }
+
+    const form = document.querySelector('.new-user-form');
+    form.addEventListener('submit', handleFormSubmit);
+
+    const authButton = document.querySelector('#addAuth');
+    authButton.addEventListener('click', handleAddAuth);
+</script>
+</body>
+</html>
